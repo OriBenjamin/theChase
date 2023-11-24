@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { twMerge } from "tailwind-merge";
 import io from "socket.io-client";
@@ -34,7 +33,9 @@ function App() {
   const [question, setQuestion] = useState(null);
   const [canChoose, setCanChoose] = useState(false);
   useEffect(() => {
-    const socket = io("http://localhost:4000", { transports: ["websocket"] }); // Change the URL to your server URL
+    const socket = io("https://thechaseserver.onrender.com/", {
+      transports: ["websocket"],
+    }); // Change the URL to your server URL
     setSocket(socket);
 
     socket.on("tooManyPlayers", () => {
@@ -82,18 +83,6 @@ function App() {
           <div className="w-1/2 bg-gradient-to-r from-blue-300 h-0.5"></div>
         </div>
       </div>
-      {!canChoose && (
-        <button
-          className="absolute right-0 h-10 w-24 bg-black/40 rounded-3xl text-white m-5"
-          onClickCapture={() => {
-            if (!canChoose) {
-              socket.emit("nextQuestion", question, answers);
-            }
-          }}
-        >
-          Next
-        </button>
-      )}
       <div className="flex flex-row-reverse w-3/4 mt-1">
         {answers.map((answer, i) => (
           <Option
@@ -112,6 +101,18 @@ function App() {
           </Option>
         ))}
       </div>
+      {!canChoose && (
+        <button
+          className="h-10 w-24 bg-black/40 rounded-3xl text-white m-5"
+          onClickCapture={() => {
+            if (!canChoose) {
+              socket.emit("nextQuestion", question, answers);
+            }
+          }}
+        >
+          Next
+        </button>
+      )}
     </div>
   );
 }
