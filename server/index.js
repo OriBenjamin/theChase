@@ -17,11 +17,12 @@ const questions = [
   {
     question: "מה השם המלא של נועם?",
     answers: ["נועם יוסף", "נועם קורן", "נועם דקל"],
+    correctAnswer: 0,
   },
   {
     question: "מי היו החברות הטובות ביותר של נועם בגן?",
     answers: ["גלי ומיה", "מאיה וגל", "מיה וגל"],
-    correctAnswer: 1,
+    correctAnswer: 2,
   },
   {
     question: "מה השם שאמא ואבא תכננו לתת לנועם לפני שנולדה:",
@@ -31,35 +32,35 @@ const questions = [
   {
     question: "מה המשקה האהוב על נועם עד גיל 12?",
     answers: ["חלב", "קפה", "שוקו"],
-    correctAnswer: 0,
+    correctAnswer: 2,
   },
   {
     question: "האם לנועם היה מוצץ?",
     answers: ["כן", "לא", "היו לה שניים- אחד ביד ואחד בפה"],
-    correctAnswer: 2,
+    correctAnswer: 1,
   },
   {
     question: "ממה נועם פחדה סביב גיל 10?",
     answers: ["מפלצות", "גנבים", "עכברים"],
-    correctAnswer: 0,
+    correctAnswer: 1,
   },
   {
     question: "ממי נועם פחדה כשהיתה קטנה?",
     answers: ["שושה המכשושה", "מימי המכשפה", "המכשפה לילי"],
-    correctAnswer: 1,
+    correctAnswer: 0,
   },
   {
     question: "איזו הופעה נועם ראתה בזאפה תל אביב עם חברה?",
     answers: ["ג'סטין ביבר", "נתן גושן", "אליעד נחום"],
-    correctAnswer: 0,
-  },
-  {
-    question: "ביום הולדת 2 של נועם אצל אוצרה נועם בכתה ולא הסכימה לחגוג עד ש…. יגיע",
-    answers: ["סבא", "אורי", "סבא טוביה"],
     correctAnswer: 2,
   },
+  {
+    question:
+      "ביום הולדת 2 של נועם אצל אוצרה נועם בכתה ולא הסכימה לחגוג עד ש…. יגיע",
+    answers: ["סבא", "אורי", "סבא טוביה"],
+    correctAnswer: 1,
+  },
 ];
-
 
 let chaserAnswered = false;
 let participantAnswered = false;
