@@ -39,12 +39,12 @@ function App() {
   const [timer, setTimer] = useState(-1);
   const [started, setStarted] = useState(false);
   useEffect(() => {
-    // const socket = io("https://thechaseserver.onrender.com/", {
-    //   transports: ["websocket"],
-    // });
-    const socket = io("http://localhost:4000/", {
+    const socket = io("https://thechaseserver.onrender.com/", {
       transports: ["websocket"],
     });
+    // const socket = io("http://localhost:4000/", {
+    //   transports: ["websocket"],
+    // });
     setSocket(socket);
 
     socket.on("tooManyPlayers", () => {
