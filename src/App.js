@@ -1,6 +1,7 @@
 import "./App.css";
 import { twMerge } from "tailwind-merge";
 import io from "socket.io-client";
+import useDidMountEffect from "./useDidMountEffect";
 
 import { useState, useEffect } from "react";
 function Option(props) {
@@ -28,14 +29,22 @@ function App() {
 
   const [answers, setAnswers] = useState([]);
   const [playerAnswer, setPlayerAnswer] = useState(null);
+  const [chaserAnswer, setChaserAnswer] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [tooManyPlayers, setTooManyPlayers] = useState(false);
   const [question, setQuestion] = useState(null);
   const [canChoose, setCanChoose] = useState(false);
+
+  // timer
+  const [timer, setTimer] = useState(-1);
+  const [started, setStarted] = useState(false);
   useEffect(() => {
-    const socket = io("https://thechaseserver.onrender.com/", {
+    // const socket = io("https://thechaseserver.onrender.com/", {
+    //   transports: ["websocket"],
+    // });
+    const socket = io("http://localhost:4000/", {
       transports: ["websocket"],
-    }); // Change the URL to your server URL
+    });
     setSocket(socket);
 
     socket.on("tooManyPlayers", () => {
@@ -47,8 +56,13 @@ function App() {
       setPlayerRole(role);
     });
 
+    socket.on("chaserAnswer", (chaserAnswer) => {
+      console.log("chaserAnswer", chaserAnswer);
+      setChaserAnswer(chaserAnswer);
+    });
+
     socket.on("sendQuestion", (question, answers) => {
-      console.log(question, answers);
+      setStarted(true);
       setQuestion(question);
       setAnswers(answers);
       setPlayerAnswer(null);
@@ -59,12 +73,26 @@ function App() {
     socket.on("revealAnswer", (answer) => {
       setCorrectAnswer(answer);
       setCanChoose(false);
+      setTimer(0);
     });
 
     return () => {
       socket.disconnect();
     };
   }, []);
+
+  useDidMountEffect(() => {
+    let interval;
+    if (canChoose) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
+      }, 1000);
+    } else {
+      setTimer(20); // Reset the timer when canChoose becomes false
+    }
+
+    return () => clearInterval(interval);
+  }, [canChoose]);
 
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-red-600">
@@ -89,11 +117,15 @@ function App() {
             key={i}
             number={["א", "ב", "ג"][i]}
             participant={playerRole === "participant" && playerAnswer === i}
-            chaser={playerRole === "chaser" && playerAnswer === i}
+            chaser={
+              (playerRole === "chaser" && playerAnswer === i) ||
+              chaserAnswer === i
+            }
             right={correctAnswer === i}
             onClick={() => {
               if (canChoose) {
                 setPlayerAnswer(i);
+                socket.emit("selectAnswer", i);
               }
             }}
           >
@@ -101,12 +133,21 @@ function App() {
           </Option>
         ))}
       </div>
+      <div
+        className={twMerge(
+          "absolute top-0 bg-black p-2 rounded-xl text-white mt-2",
+          !started && "hidden"
+        )}
+      >
+        {canChoose ? `Time Left: ${timer} seconds` : "Time's up!"}
+      </div>
       {!canChoose && (
         <button
           className="h-10 w-24 bg-black/40 rounded-3xl text-white m-5"
           onClickCapture={() => {
             if (!canChoose) {
               socket.emit("nextQuestion", question, answers);
+              setChaserAnswer(null);
             }
           }}
         >

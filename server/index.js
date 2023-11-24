@@ -17,7 +17,7 @@ const questions = [
   {
     question: "מה השם המלא של נועם?",
     answers: ["נועם יוסף", "נועם קורן", "נועם דקל"],
-    correctAnswer: 0,
+    correctAnswer: 2,
   },
   {
     question: "מי היו החברות הטובות ביותר של נועם בגן?",
@@ -62,8 +62,10 @@ const questions = [
   },
 ];
 
-let chaserAnswered = false;
-let participantAnswered = false;
+
+let chaserAnswer = null;
+
+let participantAnswer = null;
 
 function sendQuestion() {
   io.emit(
@@ -73,11 +75,12 @@ function sendQuestion() {
   );
   const currentAnswer = answer;
   setTimeout(() => {
-    if (answer === currentAnswer && !chaserAnswered && !participantAnswered) {
+    if (answer === currentAnswer && (!chaserAnswer || !participantAnswer)) {
       io.emit("revealAnswer", questions[answer].correctAnswer);
+      io.emit("chaserAnswer", chaserAnswer);
       answer++;
-      chaserAnswered = false;
-      participantAnswered = false;
+      chaserAnswer = null;
+      participantAnswer = null;
     }
   }, 20000);
 }
@@ -102,9 +105,17 @@ io.on("connection", (socket) => {
     }, 1000);
   }
 
-  socket.on("selectAnswer", () => {
-    if (role === "chaser") chaserAnswered = true;
-    else if (role === "participant") participantAnswered = true;
+  socket.on("selectAnswer", (index) => {
+    if (role === "chaser") chaserAnswer = index;
+    else if (role === "participant") participantAnswer = index;
+    if (chaserAnswer !== null && participantAnswer !== null)
+    {
+      io.emit("revealAnswer", questions[answer].correctAnswer);
+      io.emit("chaserAnswer", chaserAnswer);
+      answer++;
+      chaserAnswer = null;
+      participantAnswer = null;
+    }
   });
 
   socket.on("nextQuestion", () => {
