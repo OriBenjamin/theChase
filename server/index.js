@@ -15,27 +15,56 @@ let answer = 0;
 
 const questions = [
   {
-    question: "מה הצבע האהוב עליך?",
-    answers: ["כחול", "אדום", "ירוק"],
+    question: "מה השם המלא של נועם?",
+    answers: ["נועם יוסף", "נועם קורן", "נועם דקל"],
+  },
+  {
+    question: "מי היו החברות הטובות ביותר של נועם בגן?",
+    answers: ["גלי ומיה", "מאיה וגל", "מיה וגל"],
     correctAnswer: 1,
   },
   {
-    question: "מה המשחק האהוב עליך?",
-    answers: ["כדורגל", "כדורסל", "טניס"],
+    question: "מה השם שאמא ואבא תכננו לתת לנועם לפני שנולדה:",
+    answers: ["זוהר", "הילה", "ברקת"],
+    correctAnswer: 0,
+  },
+  {
+    question: "מה המשקה האהוב על נועם עד גיל 12?",
+    answers: ["חלב", "קפה", "שוקו"],
+    correctAnswer: 0,
+  },
+  {
+    question: "האם לנועם היה מוצץ?",
+    answers: ["כן", "לא", "היו לה שניים- אחד ביד ואחד בפה"],
     correctAnswer: 2,
   },
   {
-    question: "מה הספורטאי האהוב עליך?",
-    answers: ["מסי", "רונאלדו", "ניימאר"],
-    correctAnswer: 3,
+    question: "ממה נועם פחדה סביב גיל 10?",
+    answers: ["מפלצות", "גנבים", "עכברים"],
+    correctAnswer: 0,
+  },
+  {
+    question: "ממי נועם פחדה כשהיתה קטנה?",
+    answers: ["שושה המכשושה", "מימי המכשפה", "המכשפה לילי"],
+    correctAnswer: 1,
+  },
+  {
+    question: "איזו הופעה נועם ראתה בזאפה תל אביב עם חברה?",
+    answers: ["ג'סטין ביבר", "נתן גושן", "אליעד נחום"],
+    correctAnswer: 0,
+  },
+  {
+    question: "ביום הולדת 2 של נועם אצל אוצרה נועם בכתה ולא הסכימה לחגוג עד ש…. יגיע",
+    answers: ["סבא", "אורי", "סבא טוביה"],
+    correctAnswer: 2,
   },
 ];
+
 
 let chaserAnswered = false;
 let participantAnswered = false;
 
 function sendQuestion() {
-  console.log("Sending question");
   io.emit(
     "sendQuestion",
     questions[answer].question,
@@ -53,9 +82,7 @@ function sendQuestion() {
 }
 
 io.on("connection", (socket) => {
-  console.log("A user connected");
   answer = 0;
-  console.log(chaserConnected, playerConnected);
   let role = "";
   if (!chaserConnected) {
     chaserConnected = true;
@@ -68,7 +95,6 @@ io.on("connection", (socket) => {
     // Send the player their role
     socket.emit("startGame", role);
   } else {
-    console.log("Too many players");
     socket.emit("tooManyPlayers");
     setTimeout(() => {
       socket.disconnect();
@@ -90,7 +116,6 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     if (role === "chaser") chaserConnected = false;
     else if (role === "participant") playerConnected = false;
-    console.log("User disconnected");
   });
 });
 
