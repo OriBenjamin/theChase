@@ -1,7 +1,6 @@
 import "./App.css";
 import { twMerge } from "tailwind-merge";
 import io from "socket.io-client";
-import useDidMountEffect from "./useDidMountEffect";
 
 import { useState, useEffect } from "react";
 function Option(props) {
@@ -36,7 +35,7 @@ function App() {
   const [canChoose, setCanChoose] = useState(false);
 
   // timer
-  const [timer, setTimer] = useState(-1);
+  const [timer, setTimer] = useState(20);
   const [started, setStarted] = useState(false);
   useEffect(() => {
     const socket = io("https://thechaseserver.onrender.com/", {
@@ -81,7 +80,7 @@ function App() {
     };
   }, []);
 
-  useDidMountEffect(() => {
+  useEffect(() => {
     let interval;
     if (canChoose) {
       interval = setInterval(() => {
