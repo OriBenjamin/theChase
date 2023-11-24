@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/theChase/static/css/main.9d1da708.css",
-    "main.js": "/theChase/static/js/main.c4942d62.js",
+    "main.css": "/theChase/static/css/main.c392d040.css",
+    "main.js": "/theChase/static/js/main.6db595fb.js",
     "static/js/496.11b2dc5f.chunk.js": "/theChase/static/js/496.11b2dc5f.chunk.js",
     "index.html": "/theChase/index.html",
-    "main.9d1da708.css.map": "/theChase/static/css/main.9d1da708.css.map",
-    "main.c4942d62.js.map": "/theChase/static/js/main.c4942d62.js.map",
+    "main.c392d040.css.map": "/theChase/static/css/main.c392d040.css.map",
+    "main.6db595fb.js.map": "/theChase/static/js/main.6db595fb.js.map",
     "496.11b2dc5f.chunk.js.map": "/theChase/static/js/496.11b2dc5f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9d1da708.css",
-    "static/js/main.c4942d62.js"
+    "static/css/main.c392d040.css",
+    "static/js/main.6db595fb.js"
   ]
 }
