@@ -67,6 +67,7 @@ function App() {
       setPlayerAnswer(null);
       setCorrectAnswer(null);
       setCanChoose(true);
+      setChaserAnswer(null);
     });
 
     socket.on("revealAnswer", (answer) => {
