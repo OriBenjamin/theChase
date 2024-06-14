@@ -15,8 +15,8 @@ let answer = 0;
 
 const questions = [
   {
-    question: "מה השם המלא של נועם?",
-    answers: ["נועם יוסף", "נועם קורן", "נועם דקל"],
+    question: "מה השם המלא של אורי?",
+    answers: ["אורי יוסף", "אורי קורן", "אורי זקל"],
     correctAnswer: 2,
   },
   {
@@ -61,7 +61,6 @@ const questions = [
     correctAnswer: 1,
   },
 ];
-
 
 let chaserAnswer = null;
 
@@ -108,8 +107,7 @@ io.on("connection", (socket) => {
   socket.on("selectAnswer", (index) => {
     if (role === "chaser") chaserAnswer = index;
     else if (role === "participant") participantAnswer = index;
-    if (chaserAnswer !== null && participantAnswer !== null)
-    {
+    if (chaserAnswer !== null && participantAnswer !== null) {
       io.emit("revealAnswer", questions[answer].correctAnswer);
       io.emit("chaserAnswer", chaserAnswer);
       answer++;
